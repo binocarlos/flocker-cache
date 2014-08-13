@@ -1,6 +1,6 @@
 ## flocker-cache
 
-An in-memory cache for flocker that routes requests to /images/create onto the same server as the previous /containers/create request
+An in-memory cache for [flocker](https://github.com/binocarlos/flocker.git) that routes requests to /images/create onto the same server as the previous /containers/create request
 
 ## install
 
