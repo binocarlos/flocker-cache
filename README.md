@@ -1,6 +1,6 @@
 ## flocker-cache
 
-An in memory flocker cache to handle multi-request docker run commands
+An in-memory cache for flocker that routes requests to /images/create onto the same server as the previous /containers/create request
 
 ## install
 
@@ -16,18 +16,18 @@ var flocker = require("flocker")
 var flockercache = require("flocker-cache")
 
 var dockers = flocker()
-var backends = flockercache(function(name, container, done){
-	customRoutingLogic(name, container, done)
-})
 
-dockers.on('route', backends)
+// the flockercache will remember routing decisions for images
+dockers.on('route', flockercache(function(info, done){
+	customRoutingLogic(info, done)
+}))
+
+dockers.on('map', function(name, container, image, next){
+	next()
+})
 
 dockers.on('list', function(next){
 	next(null, serverList)
-})
-
-dockers.on('process', function(container, image, done){
-	done()
 })
 
 var server = http.createServer(function(req, res){
